@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opnsense-ingress-operator
+  namespace: opnsense-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opnsense-ingress-operator
+  template:
+    metadata:
+      labels:
+        app: opnsense-ingress-operator
+    spec:
+      serviceAccountName: opnsense-ingress-operator
+      containers:
+        - name: operator
+          image: opnsense-ingress-operator:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: opnsense-credentials
+          env:
+            - name: OPNSENSE_DEFAULT_TTL
+              value: "300"
+            - name: OPNSENSE_ANNOTATION_PREFIX
+              value: "opnsense.io"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+            capabilities:
+              drop: ["ALL"]

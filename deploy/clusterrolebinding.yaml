@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: opnsense-ingress-operator
+subjects:
+  - kind: ServiceAccount
+    name: opnsense-ingress-operator
+    namespace: opnsense-operator
+roleRef:
+  kind: ClusterRole
+  name: opnsense-ingress-operator
+  apiGroup: rbac.authorization.k8s.io
