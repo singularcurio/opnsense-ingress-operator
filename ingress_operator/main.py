@@ -3,7 +3,6 @@ from __future__ import annotations
 import logging
 
 import kopf
-from kubernetes import client as k8s_client
 from kubernetes import config as k8s_config
 from opnsense_py import OPNsenseClient
 from opnsense_py.exceptions import OPNsenseError
@@ -56,7 +55,7 @@ def cleanup(logger: logging.Logger, **_: object) -> None:
 
 def main() -> None:
     config = Config.from_env()
-    kopf.run(liveness_endpoint=(config.health_host, config.health_port))
+    kopf.run(liveness_endpoint=f"http://{config.health_host}:{config.health_port}")
 
 
 if __name__ == "__main__":
