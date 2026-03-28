@@ -14,6 +14,8 @@ class Config:
     annotation_prefix: str = "opnsense.io"
     description_prefix: str = "managed by opnsense-ingress-operator"
     reconcile_interval: int = 300
+    health_host: str = "0.0.0.0"
+    health_port: int = 8080
 
     @property
     def uuids_annotation(self) -> str:
@@ -49,6 +51,8 @@ class Config:
             "OPNSENSE_DESCRIPTION_PREFIX", "managed by opnsense-ingress-operator"
         )
         reconcile_interval = int(os.environ.get("OPNSENSE_RECONCILE_INTERVAL", "300"))
+        health_host = os.environ.get("OPNSENSE_HEALTH_HOST", "0.0.0.0")
+        health_port = int(os.environ.get("OPNSENSE_HEALTH_PORT", "8080"))
 
         return cls(
             host=host,
@@ -59,4 +63,6 @@ class Config:
             annotation_prefix=annotation_prefix,
             description_prefix=description_prefix,
             reconcile_interval=reconcile_interval,
+            health_host=health_host,
+            health_port=health_port,
         )

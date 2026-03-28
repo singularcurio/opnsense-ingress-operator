@@ -55,7 +55,8 @@ def cleanup(logger: logging.Logger, **_: object) -> None:
 
 
 def main() -> None:
-    kopf.run()
+    config = Config.from_env()
+    kopf.run(liveness_endpoint=(config.health_host, config.health_port))
 
 
 if __name__ == "__main__":
